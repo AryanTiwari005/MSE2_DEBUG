@@ -19,7 +19,8 @@ export default function App() {
       const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.category.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchPrice = p.price > priceRange.min && p.price < priceRange.max;
+        
+      const matchPrice = p.price >= priceRange.min && p.price <= priceRange.max;
       const matchCategory = category === 'All' || p.category === category;
       return matchSearch && matchPrice && matchCategory;
     });
@@ -37,14 +38,15 @@ export default function App() {
   function addToCart(product) {
     setCartItems(prev => {
       const exists = prev.find(i => i.id === product.id);
+      // bug-1
       if (exists) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
       return [...prev, { ...product, qty: 1 }];
     });
     setCartOpen(true);
   }
-
+  // bug-2
   function removeFromCart(id) {
-    setCartItems(prev => prev.filter(i => i.id === id));
+    setCartItems(prev => prev.filter(i => i.id !== id));
   }
 
   function updateQty(id, qty) {
