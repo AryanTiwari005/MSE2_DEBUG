@@ -38,13 +38,13 @@ export default function App() {
   function addToCart(product) {
     setCartItems(prev => {
       const exists = prev.find(i => i.id === product.id);
-      // bug-1
+      
       if (exists) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
       return [...prev, { ...product, qty: 1 }];
     });
     setCartOpen(true);
   }
-  // bug-2
+
   function removeFromCart(id) {
     setCartItems(prev => prev.filter(i => i.id !== id));
   }
@@ -54,7 +54,7 @@ export default function App() {
     setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty } : i));
   }
 
-  const cartCount = cartItems.reduce((sum, i) => sum + i.count, 0);
+  const cartCount = cartItems.reduce((sum, i) => sum + i.qty, 0);
   const cartItemIds = new Set(cartItems.map(i => i.productId));
 
   return (
